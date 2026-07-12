@@ -89,7 +89,11 @@ automatically and begins serving its models. Verify with `/v1/models` and a test
   Chromium instance, zero cookie/storage carry-over between accounts). Do NOT add
   `--incognito`: in this flow it makes DrissionPage's `page.cookies()` return `[]`, so the
   post-signup SSO cookie is never captured and registration fails — `auto_port` already gives
-  you the equivalent isolation without that conflict.
+  you the equivalent isolation without that conflict. For full anti-tracking hygiene also wipe
+  the temp profile dir after each session (`rm -rf "$TMPDIR/DrissionPage/autoPortData"/*`) so
+  nothing persists on disk. Residual linkage vectors you can't hide from the upstream: shared
+  egress IP (rotate residential proxies to mitigate) and a stable browser fingerprint (don't
+  fake the UA — a UA/JS mismatch trips Turnstile).
 - **Force ALL browser traffic through the proxy** (else leaks reveal your real IP):
   `--proxy-server=...` only covers HTTP/HTTPS. Add `--disable-quic` (QUIC/UDP bypasses HTTP
   proxies) and `--force-webrtc-ip-handling-policy=disable_non_proxied_udp` (WebRTC ICE host
