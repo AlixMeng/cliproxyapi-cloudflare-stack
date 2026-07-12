@@ -1,0 +1,20 @@
+# Never commit secrets or real configs
+*.key
+*.pem
+config.json
+config.local.json
+wrangler.toml
+cloudflared-cpa.service
+accounts_*.txt
+mail_credentials.txt
+auth_out/
+auth_local/
+xai-*.json
+*.auth.json
+sso_list.txt
+token.json
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store

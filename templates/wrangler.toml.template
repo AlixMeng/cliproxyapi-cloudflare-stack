@@ -1,0 +1,23 @@
+# wrangler.toml for the temp-email worker (cloudflare_temp_email)
+# Copy to wrangler.toml and replace every <placeholder>.
+
+name = "<worker-name>"                       # e.g. tempmail-worker
+main = "src/worker.ts"
+compatibility_date = "2025-04-01"
+compatibility_flags = [ "nodejs_compat" ]
+
+[vars]
+PREFIX = "<prefix>"                           # address prefix, e.g. gk
+DOMAINS = ["<your-domain>"]                   # e.g. example.com
+DEFAULT_DOMAINS = ["<your-domain>"]
+ADMIN_PASSWORDS = ["<admin-password>"]        # strong random hex; becomes the register's cloudflare_api_key
+JWT_SECRET = "<jwt-secret>"                   # strong random hex
+BLACK_LIST = ""
+ENABLE_USER_CREATE_EMAIL = true
+ENABLE_USER_DELETE_EMAIL = true
+ENABLE_AUTO_REPLY = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tempmail-db"
+database_id = "<d1-database-id>"              # from `wrangler d1 create tempmail-db` or the REST API

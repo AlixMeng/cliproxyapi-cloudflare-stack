@@ -1,0 +1,21 @@
+# /etc/systemd/system/cloudflared-cpa.service
+# Fronts CLIProxyAPI (:8317) over HTTPS via a Cloudflare named tunnel.
+# Replace <connector-token> with the token returned by POST /accounts/<id>/cfd_tunnel.
+
+[Unit]
+Description=Cloudflare Tunnel for CLIProxyAPI (grok)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate run --token <connector-token>
+Restart=always
+RestartSec=5
+Environment=NO_AUTOUPDATE=true
+
+[Install]
+WantedBy=multi-user.target
+
+# Install:
+#   sudo install -m 0644 cloudflared-cpa.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now cloudflared-cpa
