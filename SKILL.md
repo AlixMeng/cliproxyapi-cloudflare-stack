@@ -84,6 +84,12 @@ automatically and begins serving its models. Verify with `/v1/models` and a test
 - **NSG blocks inbound 8317** by default → use the Tunnel (Phase 3), don't open the port.
 - **D1 init without wrangler**: the REST `/query` endpoint accepts multi-statement SQL in
   one POST (one result-group per statement).
+- **Browser session isolation for any account-creation flow**: run each session in
+  **incognito with a fresh ephemeral profile** (DrissionPage:
+  `options.set_argument('--incognito')` + `auto_port()`), so no cookies/storage/fingerprint
+  carry over between accounts. Shared browser state links accounts and is a common cause of
+  upstream flagging/denial — isolation doesn't guarantee a grant (that's the upstream's
+  per-account decision, independent of IP/token), but it removes the easiest linkage signal.
 
 ## Verification gate
 A `/v1/chat/completions` call through your **public** CPA endpoint returns a non-empty
