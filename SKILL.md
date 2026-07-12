@@ -84,12 +84,12 @@ automatically and begins serving its models. Verify with `/v1/models` and a test
 - **NSG blocks inbound 8317** by default → use the Tunnel (Phase 3), don't open the port.
 - **D1 init without wrangler**: the REST `/query` endpoint accepts multi-statement SQL in
   one POST (one result-group per statement).
-- **Browser session isolation for any account-creation flow**: run each session in
-  **incognito with a fresh ephemeral profile** (DrissionPage:
-  `options.set_argument('--incognito')` + `auto_port()`), so no cookies/storage/fingerprint
-  carry over between accounts. Shared browser state links accounts and is a common cause of
-  upstream flagging/denial — isolation doesn't guarantee a grant (that's the upstream's
-  per-account decision, independent of IP/token), but it removes the easiest linkage signal.
+- **Browser session isolation for any account-creation flow**: launch each session in a
+  **fresh ephemeral profile** (DrissionPage: `auto_port()` → a unique temp user-data-dir per
+  Chromium instance, zero cookie/storage carry-over between accounts). Do NOT add
+  `--incognito`: in this flow it makes DrissionPage's `page.cookies()` return `[]`, so the
+  post-signup SSO cookie is never captured and registration fails — `auto_port` already gives
+  you the equivalent isolation without that conflict.
 - **Force ALL browser traffic through the proxy** (else leaks reveal your real IP):
   `--proxy-server=...` only covers HTTP/HTTPS. Add `--disable-quic` (QUIC/UDP bypasses HTTP
   proxies) and `--force-webrtc-ip-handling-policy=disable_non_proxied_udp` (WebRTC ICE host
