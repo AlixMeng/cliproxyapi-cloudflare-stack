@@ -90,6 +90,11 @@ automatically and begins serving its models. Verify with `/v1/models` and a test
   carry over between accounts. Shared browser state links accounts and is a common cause of
   upstream flagging/denial — isolation doesn't guarantee a grant (that's the upstream's
   per-account decision, independent of IP/token), but it removes the easiest linkage signal.
+- **Force ALL browser traffic through the proxy** (else leaks reveal your real IP):
+  `--proxy-server=...` only covers HTTP/HTTPS. Add `--disable-quic` (QUIC/UDP bypasses HTTP
+  proxies) and `--force-webrtc-ip-handling-policy=disable_non_proxied_udp` (WebRTC ICE host
+  candidates leak the local/public IP). Verify with a WebRTC leak check + an IP echo page that
+  only the proxy's IP appears (HTTP egress) and no host candidates are gathered.
 
 ## Verification gate
 A `/v1/chat/completions` call through your **public** CPA endpoint returns a non-empty
